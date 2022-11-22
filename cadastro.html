@@ -34,7 +34,8 @@
                         <span class="input-mensagem-erro">Este campo não está válido</span>
                     </div>
                     <div class="input-container">
-                        <input name="senha" id="senha" class="input" type="password" placeholder="Senha" minlength="8" required>
+                        <input name="senha" id="senha" class="input" type="password" placeholder="Senha" 
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?!.*[ !@#$%¨&*_=+-]).{6,12}$" title="A senha deve ter entre 6 e 12 caracters, deve conter pelo menos uma letra minuscula e uma maiuscula, um numero e não deve conter simbolos." required>
                         <label class="input-label" for="senha">Senha</label>
                         <span class="input-mensagem-erro">Este campo não está válido</span>
                     </div>
