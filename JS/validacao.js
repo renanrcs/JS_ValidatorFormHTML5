@@ -75,7 +75,7 @@ function validaDataNascimento(input){
 function maiorQue18(data){
     const dataAtual = new Date();
     const dataInformada = new Date(data.getUTCFullYear() + 18, data.getUTCMonth(), data.getUTCDate());
-    console.log(dataInformada);         
+
     return dataAtual >= dataInformada;
 }
 
@@ -83,7 +83,7 @@ function validaCPF(input){
     const cpfFprmatado = input.value.replace(/\D/g, '');
     let mensagem = '';
 
-    if(!checaCPFRepetido(cpfFprmatado)){
+    if(!checaCPFRepetido(cpfFprmatado) || !checaEstruturaCPF(cpfFprmatado)){
         mensagem = 'CPF informado não é válido!';
     }
 
@@ -114,3 +114,59 @@ function checaCPFRepetido(cpf){
 
     return cpfValido;
 }
+
+function checaEstruturaCPF(cpf){
+    const multiplicador = 10;
+
+    return checaDigitoVerificador(cpf, multiplicador);
+}
+
+function checaDigitoVerificador(cpf, multiplicador){
+
+    if(multiplicador >= 12){
+        return true;
+    }
+    
+    cpf = cpf.toString();
+    let multiplicadorInicial = multiplicador;
+    let soma = 0;
+
+    const cpfSemDigitos = cpf.substr(0, multiplicador - 1).split('');
+    const digitoVerificador = cpf.charAt(multiplicador - 1);
+
+    for(let count = 0; multiplicadorInicial > 1; multiplicadorInicial--){
+        soma = soma + cpfSemDigitos[count] * multiplicadorInicial;
+        count++;
+    }
+
+    // if(digitoVerificador == confirmaDigito(soma)){
+    //     return checaDigitoVerificador(cpf, multiplicador + 1);
+    // }
+
+    if((digitoVerificador == confirmaDigito(soma)) || (digitoVerificador == 0 && confirmaDigito(soma) == 10)) {
+        return checaDigitoVerificador(cpf, multiplicador + 1)
+    }
+
+    return false;
+}
+
+// function confirmaDigito(soma){
+//     return 11 - (soma % 11);
+// }
+
+function confirmaDigito(soma){
+    let restoDaDivisao = soma % 11;
+    if(restoDaDivisao >= 2){
+        return 11 - restoDaDivisao
+    } else {
+        return 0
+    }
+}
+
+/*=====================================================================================*/
+
+// 123 456 789 09
+
+// let soma = (11 * 1) + (10 * 2) + (9 * 3) ... (2 * 0)
+
+// let digitoVerificador = 11 - (soma % 11)
