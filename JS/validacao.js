@@ -40,6 +40,10 @@ const mensegensErro = {
     cpf: {
         valueMissing: 'O campo de CPF não pode estar vazio',
         customError: 'CPF informado não é válido!'
+    },
+    cep: {
+        valueMissing: 'O campo de CEP não pode estar vazio',
+        customError: 'CEP informado não é válido!'
     }
 }
 
