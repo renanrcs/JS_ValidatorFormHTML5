@@ -43,7 +43,8 @@ const mensegensErro = {
     },
     cep: {
         valueMissing: 'O campo de CEP não pode estar vazio',
-        customError: 'CEP informado não é válido!'
+        patternMismatch: 'CEP informado não é válido!',
+        customError: 'CEP não encontrado, verifique os dados'
     },
     logradouro: {
         valueMissing: 'O campo de logradouro não pode estar vazio',
@@ -193,10 +194,26 @@ function recuperarCEP(input){
             response => response.json()
         ).then(
             data => {
-                console.log(data);
+                if(data.erro){
+                    input.setCustomValidity('CEP não encontrado, verifique os dados');
+                    return;
+                }
+                input.setCustomValidity('');
+                preencheCamposComCEP(data);
+                return;
             }
         )
     }
+}
+
+function preencheCamposComCEP(data){
+    const logradouro = document.querySelector('[data-tipo="logradouro"]');
+    const cidade = document.querySelector('[data-tipo="cidade"]');
+    const estado = document.querySelector('[data-tipo="estado"]');
+
+    logradouro.value = data.logradouro;
+    cidade.value = data.localidade;
+    estado.value = data.uf;
 }
 
 /*=====================================================================================*/
